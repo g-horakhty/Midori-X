@@ -85,6 +85,7 @@ namespace Midori {
             });
             core_settings.bind_property ("enable-caret-browsing", settings, "enable-caret-browsing", BindingFlags.SYNC_CREATE);
 
+
             if (uri != null) {
                 display_uri = uri;
                 display_title = (title != null && title != "") ? title : uri;
@@ -121,6 +122,8 @@ namespace Midori {
                 debug ("Failed to lookup title in history: %s", error.message);
             }
         }
+
+
 
         public override bool focus_in_event (Gdk.EventFocus event) {
             // Delayed load on focus
@@ -206,7 +209,7 @@ namespace Midori {
             // Forward URIs that WebKit can't show to external handler
             if (load_error is WebKit.PolicyError.CANNOT_SHOW_URI) {
                 try {
-                    Gtk.show_uri (get_screen (), uri, Gtk.get_current_event_time ());
+                    AppInfo.launch_default_for_uri (uri, null);
                 } catch (Error error) {
                     critical ("Failed to open %s: %s", uri, error.message);
                 }
